@@ -30,16 +30,36 @@ is-running)
 
 start)
     echo "Starting... $BINARY $PARAMS" >> "$LOG_FILE"
-    if pgrep -f "socat" >/dev/null 2>&1 ; then
-        # socat is running
-        cd /usr/src/app
-        $BINARY $PARAMS 2>$LOG_FILE >$LOG_FILE &
-        exit 0
-    else
-        # socat is not running
-        echo "##### Socat is not running, skipping start of home assistant"
-        exit 1
+    echo "Checking socat..."
+    SOCATCHECK=`pgrep -f "socat"`
+    if [ "${SOCATCHECK}" = "" ] >/dev/null 2>&1 ; then
+        echo "##### socat is not running, skipping start of home assistant"
+#        exit 1
     fi
+
+    if [ "${MYSQL_HOST}" != "" ]; then
+        echo "Checking mysql..."
+        MYSQLCHECK=`mysql -h ${MYSQL_HOST} -u ${MYSQL_USER} -p${MYSQL_PASS} -e';'`
+        if [ $? != 0 ]; then
+            echo "##### MySQL is not running, skipping start of home assistant"
+            exit 1
+        fi
+    fi
+
+    if [ "${MQTT_HOST}" != "" ]; then
+        echo "Checking mqtt..."
+        MQTTCHECK=`mosquitto_pub -h ${MQTT_HOST} -u ${MQTT_USER} -P ${MQTT_PASS} -n -t /test`
+        if [ $? != 0 ]; then
+            echo "##### MQTT is not running, skipping start of home assistant"
+            exit 1
+        fi
+    fi
+
+    # Everything is running, start homeassistant
+    cd /usr/src/app
+    $BINARY $PARAMS 2>$LOG_FILE >$LOG_FILE &
+    exit 0
+
     ;;
 
 start-fail)
