@@ -65,12 +65,13 @@ What the zwave device should be mapped to. Use this in your homeassistant config
 
 # MQTT options
 
-**MQTT_HOST**="1.2.3.4"
+**MQTT_HOST**="localhost"
 
-**MQTT_USER**="user"
+**MQTT_USER**="hass"
 
-**MQTT_PASS**="pass"
+**MQTT_PASS**="hass"
 
+**MQTT_PORT**="3306"
 
 ## Deployment
 

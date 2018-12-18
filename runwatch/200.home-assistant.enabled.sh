@@ -3,6 +3,10 @@
 BINARY="python"
 PARAMS="-m homeassistant --config /config"
 
+if [[ -z "${MYSQL_PORT}" ]]; then
+  MYSQL_PORT=3306
+fi
+
 ######################################################
 
 CMD=$1
@@ -39,7 +43,7 @@ start)
 
     if [ "${MYSQL_HOST}" != "" ]; then
         echo "Checking mysql..."
-        MYSQLCHECK=`mysql -h ${MYSQL_HOST} -u ${MYSQL_USER} -p${MYSQL_PASS} -e';'`
+        MYSQLCHECK=`mysql -h ${MYSQL_HOST} -u ${MYSQL_USER} -P ${MYSQL_PORT} -p${MYSQL_PASS} -e';'`
         if [ $? != 0 ]; then
             echo "##### MySQL is not running, skipping start of home assistant"
             exit 1
