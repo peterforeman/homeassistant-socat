@@ -34,7 +34,7 @@ start)
     SOCATCHECK=`pgrep -f "socat"`
     if [ "${SOCATCHECK}" = "" ] >/dev/null 2>&1 ; then
         echo "##### socat is not running, skipping start of home assistant"
-#        exit 1
+        exit 1
     fi
 
     if [ "${MYSQL_HOST}" != "" ]; then
