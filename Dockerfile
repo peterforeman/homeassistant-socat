@@ -1,4 +1,4 @@
-FROM "homeassistant/home-assistant:latest"
+FROM homeassistant/home-assistant:0.85.1
 LABEL maintainer="Peter Foreman <peter@frmn.nl>"
 
 # Install socat
