@@ -10,6 +10,14 @@ if [[ -z "${SOCAT_ZWAVE_LINK}" ]]; then
   SOCAT_ZWAVE_LINK="/dev/zwave"
 fi
 
+# No socat host/port set? Then do not complain and just exit.
+if [[ -z "${SOCAT_ZWAVE_HOST}" ]]; then
+  exit 1
+fi
+if [[ -z "${SOCAT_ZWAVE_PORT}" ]]; then
+  exit 1
+fi
+
 BINARY="socat"
 PARAMS="$INT_SOCAT_LOG-d pty,link=$SOCAT_ZWAVE_LINK,raw,user=root,mode=777 $SOCAT_ZWAVE_TYPE:$SOCAT_ZWAVE_HOST:$SOCAT_ZWAVE_PORT"
 

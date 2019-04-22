@@ -34,11 +34,13 @@ is-running)
 
 start)
     echo "Starting... $BINARY $PARAMS" >> "$LOG_FILE"
-    echo "Checking socat..."
-    SOCATCHECK=`pgrep -f "socat"`
-    if [ "${SOCATCHECK}" = "" ] >/dev/null 2>&1 ; then
-        echo "##### socat is not running, skipping start of home assistant"
-        exit 1
+    if [ "${SOCAT_ZWAVE_HOST}" != "" ]; then
+        echo "Checking socat..."
+        SOCATCHECK=`pgrep -f "socat"`
+        if [ "${SOCATCHECK}" = "" ] >/dev/null 2>&1 ; then
+            echo "##### socat is not running, skipping start of home assistant"
+            exit 1
+        fi
     fi
 
     if [ "${MYSQL_HOST}" != "" ]; then
